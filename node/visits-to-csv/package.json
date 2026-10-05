@@ -1,0 +1,17 @@
+{
+  "name": "aveecare-example-visits-to-csv",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Export a date range of AveeCare visits to a CSV file.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "start": "node visits-to-csv.mjs"
+  },
+  "dependencies": {
+    "aveecare": "^0.1.0"
+  }
+}

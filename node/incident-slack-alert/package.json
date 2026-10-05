@@ -1,0 +1,17 @@
+{
+  "name": "aveecare-example-incident-slack-alert",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Post new AveeCare incident reports to a Slack channel.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "start": "node incident-slack-alert.mjs"
+  },
+  "dependencies": {
+    "aveecare": "^0.1.0"
+  }
+}

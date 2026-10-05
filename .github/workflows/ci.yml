@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# Each example is checked for syntax. Add an install-and-run step per example once its
+# dependencies are on a registry and you have a sandbox API key stored as a secret.
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Node examples parse
+        run: |
+          for file in node/*/*.mjs; do node --check "$file"; done
+          for file in node/*/package.json; do node -e "JSON.parse(require('fs').readFileSync('$file','utf8'))"; done
+      - name: Python examples compile
+        run: python -m compileall -q python
+      - name: Dependencies are the published library only
+        run: |
+          for file in node/*/package.json; do grep -q '"aveecare": "^0.1.0"' "$file"; done
+          for file in python/*/requirements.txt; do grep -qx 'aveecare>=0.1.0' "$file"; done
+          if grep -rEn 'file:|[.][.]/' node/*/package.json python/*/requirements.txt; then exit 1; fi
+      - name: No real API key committed
+        run: |
+          if grep -rEIn 'ak_[A-Za-z0-9]{12}_[A-Za-z0-9]{20,}' --exclude-dir=.git .; then exit 1; fi
